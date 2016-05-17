@@ -3,7 +3,9 @@ from conans import ConanFile, CMake
 class HelloConan(ConanFile):
    name = "Hello"
    version = "0.1"
+   license="MIT"
    settings = "os", "compiler", "build_type", "arch"
+   url = "https://github.com/memsharded/conan-hello.git"
 
    def source(self):
        self.run("git clone https://github.com/memsharded/hello.git")
