@@ -11,7 +11,7 @@ class HelloConan(ConanFile):
        self.run("git clone https://github.com/memsharded/hello.git")
 
    def build(self):
-       cmake = CMake(self.settings)
+       cmake = CMake(self)
        self.run('cd hello && cmake . %s' % cmake.command_line)
        self.run("cd hello && cmake --build . %s" % cmake.build_config)
 
