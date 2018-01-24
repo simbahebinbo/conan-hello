@@ -1,4 +1,4 @@
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools
 import os
 
 channel = os.getenv("CONAN_CHANNEL", "testing")
@@ -10,10 +10,11 @@ class HelloReuseConan(ConanFile):
    generators = "cmake"
 
    def build(self):
-       cmake = CMake(self.settings)
-       self.run('cmake "%s" %s' % (self.conanfile_directory, cmake.command_line))
-       self.run("cmake --build . %s" % cmake.build_config)
+       cmake = CMake(self)
+       cmake.configure()
+       cmake.build()
 
    def test(self):
        # equal to ./bin/greet, but portable win: .\bin\greet
-       self.run(os.sep.join([".","bin", "greet"]))
+       if not tools.cross_building(self.settings):
+           self.run(os.sep.join([".","bin", "greet"]))
