@@ -32,9 +32,8 @@ class HelloConan(ConanFile):
 
     def build(self):
         build_script_folder=os.path.join(self.source_folder)
-        cmake = CMake(self)
-        cmake.configure(build_script_folder=build_script_folder)
-        cmake.build()
+        self.run(f"cmake -DEXAMPLES=OFF {build_script_folder}")
+        self.run("cmake --build .")
 
     def package(self):
         cmake = CMake(self)
