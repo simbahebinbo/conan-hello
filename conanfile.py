@@ -28,6 +28,9 @@ class HelloConan(ConanFile):
         cmake.build()
 
     def package(self):
+        cmake = CMake(self)
+        cmake.install()
+        self.output.info(f"Package folder: {self.package_folder}")
         include_folder = os.path.join(self.package_folder, "include")
         lib_folder = os.path.join(self.package_folder, "lib")
 
