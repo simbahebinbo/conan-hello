@@ -1,7 +1,9 @@
 import os
 from conan import ConanFile
+from conan.errors import ConanException
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy
+from conan.tools.scm import Git
 
 class HelloConan(ConanFile):
     name = "hello"
@@ -20,11 +22,24 @@ class HelloConan(ConanFile):
         deps.generate()
 
     def source(self):
-        self.run("git clone https://github.com/simbahebinbo/hello.git")
+        source_folder = os.path.join(self.source_folder, "hello")
+        if not os.path.exists(source_folder):
+            self.output.info(f"Cloning repository into '{source_folder}'")
+            self.run(f"git clone https://github.com/simbahebinbo/hello.git {source_folder}")
+        else:
+            self.output.info(f"Source folder '{source_folder}' already exists, skipping clone.")
+
+        self.output.info("Pulling latest changes")
+        self.run(f"git -C {source_folder} pull")
+
 
     def build(self):
+        build_script_folder = os.path.join(self.source_folder, "hello")
+        self.output.info(f"Build script folder: {build_script_folder}")
+        if not os.path.exists(build_script_folder):
+            raise ConanException(f"Build script folder '{build_script_folder}' does not exist!")
         cmake = CMake(self)
-        cmake.configure(build_script_folder="hello")
+        cmake.configure(build_script_folder=build_script_folder)
         cmake.build()
 
     def package(self):
