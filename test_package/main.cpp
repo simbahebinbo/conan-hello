@@ -1,5 +1,9 @@
-#include "hello.h"
+//#include <libhello/greet.hpp>
 
-int main (void){
-    hello();
+//using namespace libhello;
+
+int main()
+{
+//    greet();
+    return 0;
 }

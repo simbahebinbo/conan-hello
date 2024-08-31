@@ -1,20 +1,21 @@
-from conans import ConanFile, CMake, tools
+from conan import ConanFile
+from conan.tools.cmake import CMake, cmake_layout
 import os
 
-channel = os.getenv("CONAN_CHANNEL", "testing")
-username = os.getenv("CONAN_USERNAME", "memsharded")
+class HelloTestConan(ConanFile):
+    settings = "os", "compiler", "build_type", "arch"
+    generators = "CMakeDeps", "CMakeToolchain"
+    requires = "hello/1.0.0"
+    test_type = "explicit"
 
-class HelloReuseConan(ConanFile):
-   settings = "os", "compiler", "build_type", "arch"
-   requires = "Hello/0.1@%s/%s" % (username, channel)
-   generators = "cmake"
+    def layout(self):
+        cmake_layout(self)
 
-   def build(self):
-       cmake = CMake(self)
-       cmake.configure()
-       cmake.build()
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
 
-   def test(self):
-       # equal to ./bin/greet, but portable win: .\bin\greet
-       if not tools.cross_building(self.settings):
-           self.run(os.sep.join([".","bin", "greet"]))
+    def test(self):
+        if not self.settings.os == "Windows":
+            self.run(".%sgreet" % os.sep, env="conanrun")
