@@ -1,4 +1,4 @@
-# conan-hello
+# conan-libhello
 Packaging the hello library
 
 ```shell
