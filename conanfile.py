@@ -4,7 +4,7 @@ from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.scm import Git
 from conan.tools.files import copy
 
-class HelloConan(ConanFile):
+class PackageConan(ConanFile):
     name = "hello"
     version = "1.0.0"
     license = "MIT"
