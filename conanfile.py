@@ -32,7 +32,7 @@ class HelloConan(ConanFile):
 
     def build(self):
         build_script_folder=os.path.join(self.source_folder)
-        self.run(f"cmake -DEXAMPLES=OFF {build_script_folder}")
+        self.run(f"cmake {build_script_folder}")
         self.run("cmake --build .")
 
     def package(self):
