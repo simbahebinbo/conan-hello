@@ -10,6 +10,9 @@ class PackageConan(ConanFile):
     license = "MIT"
     settings = "os", "compiler", "build_type", "arch"
     url = "https://github.com/simbahebinbo/conan-hello.git"
+    requires = (
+        "gtest/1.14.0"
+    )
 
     def layout(self):
         cmake_layout(self)
