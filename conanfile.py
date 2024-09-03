@@ -9,7 +9,7 @@ class PackageConan(ConanFile):
     version = "1.0.0"
     license = "MIT"
     settings = "os", "compiler", "build_type", "arch"
-    url = "https://github.com/simbahebinbo/conan-hello.git"
+    url = "https://github.com/simbahebinbo/conan-libhello.git"
 
     def layout(self):
         cmake_layout(self)
@@ -23,12 +23,12 @@ class PackageConan(ConanFile):
     def source(self):
         git = Git(self)
         if not os.path.exists(os.path.join(self.source_folder, ".git")):
-            git.clone("https://github.com/simbahebinbo/hello.git", target=".")
+            git.clone("https://github.com/simbahebinbo/cpp-libhello.git", target=".")
         else:
             self.run("git pull")
 
-        # 检查分支或标签是否正确（可选）
-        git.checkout("master")
+        branch_name = "master"
+        git.checkout(branch_name)
 
     def build(self):
         build_script_folder=os.path.join(self.source_folder)
@@ -44,9 +44,8 @@ class PackageConan(ConanFile):
         # 库文件路径
         lib_folder = os.path.join(self.build_folder, "src")
 
-        # 使用 conan.tools.files.copy 替代 self.copy
-        copy(self, "*.hpp", dst=os.path.join(self.package_folder, "include"), src=include_folder)
-        copy(self, "*.a", dst=os.path.join(self.package_folder, "lib"), src=lib_folder)
+        copy(self, "*.hpp", dst=os.path.join(self.package_folder, "include"), src=include_folder, keep_path=True)
+        copy(self, "*.a", dst=os.path.join(self.package_folder, "lib"), src=lib_folder, keep_path=True)
 
     def package_info(self):
         self.cpp_info.libs = ["hello"]
